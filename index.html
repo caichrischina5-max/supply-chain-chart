@@ -661,6 +661,137 @@ window.switchTab = function(company) {
 };
 
 
+const TL_COMPANIES = {
+apple:{color:'#555',name:'Apple',ticker:'AAPL',profile:{founder:'1976年 · 乔布斯/沃兹尼亚克',business:'消费电子·软件·服务',revenue:'约3833亿$/年',mcap:'$3.8万亿',moat:'A系列/M系列自研芯片，iOS封闭生态，服务订阅高利润',highlight:'1984 GUI → 2007 iPhone → 2020 Apple Silicon'},events:[
+{year:1976,type:'创立',label:'车库创业',desc:'乔布斯/沃兹尼亚克/韦恩创立',kinds:['star'],cause_of:[1984],effect_of:[]},
+{year:1984,type:'产品',label:'Macintosh',desc:'GUI图形界面颠覆人机交互',kinds:['product'],cause_of:[1997],effect_of:[1976],chain:'Macintosh开创GUI → 乔布斯被踢出 → 1997回归再次革命'},
+{year:1997,type:'转折',label:'乔布斯回归',desc:'收购NeXT简化产品线，开启12年复兴',kinds:['star'],cause_of:[2007],effect_of:[1984],chain:'回归 → iMac → iPod → 2007 iPhone重构手机'},
+{year:2001,type:'产品',label:'iPod',desc:'消费电子突破，数字音乐生态',kinds:['product'],cause_of:[2007],effect_of:[1997],chain:'iPod → iTunes → App Store前身'},
+{year:2007,type:'产品',label:'iPhone发布',desc:'智能手机革命，App Store开创应用经济',kinds:['star','product'],cause_of:[2011,2018],effect_of:[1997,2001],chain:'iPhone → App Store → 服务收入爆发 → 2018市值万亿'},
+{year:2011,type:'领导',label:'库克接任CEO',desc:'运营效率提升，服务业务扩展',kinds:['lead'],cause_of:[2018],effect_of:[2007],chain:'库克优化供应链 → 服务高利润 → 2018市值万亿'},
+{year:2015,type:'产品',label:'Apple Watch',desc:'可穿戴布局，健康科技切入',kinds:['product'],cause_of:[2024],effect_of:[2010],chain:'Watch → 健康生态 → 2024 AI整合'},
+{year:2018,type:'财务',label:'市值破万亿',desc:'全球首家万亿美元市值',kinds:['fin'],cause_of:[2020],effect_of:[2007,2011],chain:'iPhone+服务 → 万亿 → 2022 2万亿'},
+{year:2020,type:'产品',label:'Apple Silicon',desc:'自研M1芯片，弃用Intel，垂直整合',kinds:['star','product'],cause_of:[2022],effect_of:[2018],chain:'Silicon → Mac性能跃升 → 护城河加深'},
+{year:2022,type:'财务',label:'市值破2万亿',desc:'全球市值最高公司',kinds:['fin'],cause_of:[2023],effect_of:[2020],chain:'Silicon驱动 → Vision Pro'},
+{year:2023,type:'产品',label:'Vision Pro',desc:'混合现实，空间计算平台',kinds:['product'],cause_of:[2024],effect_of:[2022],chain:'Vision Pro → 2024 AI整合'},
+{year:2024,type:'战略',label:'Apple Intelligence',desc:'生成式AI，Siri全面升级',kinds:['strategy'],cause_of:[],effect_of:[2015,2023],chain:'AI成为核心竞争力'},
+]},
+nvidia:{color:'#76b900',name:'NVIDIA',ticker:'NVDA',profile:{founder:'1993年 · 黄仁勋',business:'GPU·AI加速器·自动驾驶',revenue:'约6000亿$/年',mcap:'$4万亿',moat:'CUDA生态15年积累，GPU+软件垂直整合',highlight:'1999 GPU发明 → 2006 CUDA → 2012 AlexNet → 2023 H100'},events:[
+{year:1993,type:'创立',label:'公司成立',desc:'黄仁勋/Malachowsky/Priem',kinds:['star'],cause_of:[1999],effect_of:[]},
+{year:1999,type:'产品',label:'发明GPU',desc:'发明图形处理器，奠定GPU行业标准',kinds:['star','product'],cause_of:[2006],effect_of:[1993],chain:'GPU发明 → CUDA硬件基础'},
+{year:2006,type:'产品',label:'CUDA架构',desc:'开放GPU并行计算，科学计算普及',kinds:['star','product'],cause_of:[2012],effect_of:[1999],chain:'CUDA → AlexNet用CUDA训练 → 深度学习爆发 → GPU成AI核心'},
+{year:2012,type:'技术',label:'AlexNet突破',desc:'深度学习爆发，现代AI时代开启',kinds:['star','product'],cause_of:[2018,2023],effect_of:[2006],chain:'AlexNet → 深度学习爆发 → GPU成AI标配 → H100需求井喷'},
+{year:2018,type:'产品',label:'RTX光线追踪',desc:'实时光线追踪，图形技术革命',kinds:['star','product'],cause_of:[2020],effect_of:[2012,2016],chain:'RTX → H100爆发'},
+{year:2020,type:'财务',label:'市值爆发',desc:'AI热潮，突破5000亿美元',kinds:['fin'],cause_of:[2023],effect_of:[2018],chain:'AI热潮 → 2023市值万亿'},
+{year:2023,type:'产品',label:'H100爆款',desc:'数据中心需求井喷，成为AI代名词',kinds:['star','product'],cause_of:[2024],effect_of:[2020,2012],chain:'H100爆款 → 数据中心90% → 2024 Blackwell'},
+{year:2024,type:'产品',label:'Blackwell B200',desc:'训练效率提升数倍',kinds:['product'],cause_of:[],effect_of:[2023],chain:'Blackwell → 推理+训练双重霸主'},
+]},
+tsmc:{color:'#0071c5',name:'台积电',ticker:'TSM',profile:{founder:'1987年 · 张忠谋',business:'晶圆代工·先进制程',revenue:'约900亿$/年',mcap:'$8000亿',moat:'制程领先5年以上，良率卓越',highlight:'1987 代工首创 → 2017 7nm → 2022 3nm → 2023 海外扩张'},events:[
+{year:1987,type:'创立',label:'晶圆代工首创',desc:'张忠谋创立，芯片设计与制造分离',kinds:['star'],cause_of:[2000],effect_of:[]},
+{year:2000,type:'产品',label:'先进制程领先',desc:'0.13微米，开始领先',kinds:['product'],cause_of:[2010],effect_of:[1987],chain:'制程领先 → 苹果/AMD/英伟达全依赖'},
+{year:2010,type:'产品',label:'28nm工艺',desc:'性能和功耗优势，移动芯片爆发',kinds:['star','product'],cause_of:[2014],effect_of:[2000],chain:'28nm → 苹果A9大单'},
+{year:2014,type:'产品',label:'16nm FinFET',desc:'FinFET工艺突破',kinds:['star','product'],cause_of:[2017],effect_of:[2010],chain:'FinFET → 7nm基础'},
+{year:2017,type:'产品',label:'7nm量产',desc:'业界首次EUV前制程',kinds:['star','product'],cause_of:[2020],effect_of:[2014],chain:'7nm → 苹果A12/AMD Zen/英伟达Hopper → 2020 5nm → 2022 3nm'},
+{year:2020,type:'产品',label:'5nm量产',desc:'A14首发，摩尔定律极限突破',kinds:['star','product'],cause_of:[2022],effect_of:[2017],chain:'5nm → H100/A15'},
+{year:2022,type:'产品',label:'3nm GAA',desc:'GAA架构，性能提升显著',kinds:['star','product'],cause_of:[2023],effect_of:[2020],chain:'3nm → 地缘政治 → 2023海外扩张'},
+{year:2023,type:'战略',label:'海外扩张',desc:'美国/日本/欧洲工厂建设',kinds:['star','strategy'],cause_of:[],effect_of:[2022],chain:'地缘政治 → 亚利桑那/熊本/德累斯顿'},
+]},
+amd:{color:'#ed1c24',name:'AMD',ticker:'AMD',profile:{founder:'1969年 · 桑德斯',business:'CPU·GPU·数据中心',revenue:'约227亿$/年',mcap:'$2500亿',moat:'无晶圆厂专注设计+TSMC制程',highlight:'2009 无晶圆厂 → 2017 Ryzen → 2019 EPYC → 2024 MI300'},events:[
+{year:1969,type:'创立',label:'公司创立',desc:'桑德斯创立，逻辑芯片第二来源',kinds:['star'],cause_of:[1975],effect_of:[]},
+{year:1975,type:'产品',label:'微处理器',desc:'进入微处理器市场',kinds:['product'],cause_of:[1999],effect_of:[1969],chain:'微处理器 → K5/K6 → Athlon'},
+{year:1999,type:'产品',label:'Athlon 1GHz',desc:'首个1GHz处理器，超越竞品',kinds:['star','product'],cause_of:[2006],effect_of:[1975],chain:'Athlon → 收购ATI进GPU'},
+{year:2006,type:'收购',label:'收购ATI',desc:'54亿美元进入GPU市场',kinds:['acquisition'],cause_of:[2009],effect_of:[1999],chain:'ATI整合困难 → 制造剥离'},
+{year:2009,type:'转折',label:'无晶圆厂转型',desc:'剥离制造给GlobalFoundries，专注设计',kinds:['star','strategy'],cause_of:[2017],effect_of:[2006],chain:'剥离制造 → 专注设计+TSMC → 8年后Ryzen飞跃'},
+{year:2011,type:'挫折',label:'Bulldozer失败',desc:'架构失误，市场份额流失',kinds:[],cause_of:[2014],effect_of:[2009],chain:'Bulldozer → 苏姿丰上任 → Zen'},
+{year:2014,type:'领导',label:'苏姿丰上任',desc:'复兴开始，高性能计算聚焦',kinds:['star'],cause_of:[2017],effect_of:[2011],chain:'苏姿丰 → Zen → 2017 Ryzen翻身'},
+{year:2017,type:'产品',label:'Ryzen/Zen',desc:'性能飞跃，桌面/服务器市场复兴',kinds:['star','product'],cause_of:[2019],effect_of:[2014,2009],chain:'Zen → 单核追平英特尔 → EPYC服务器'},
+{year:2019,type:'产品',label:'EPYC突破',desc:'数据中心大规模采用，云计算',kinds:['star','product'],cause_of:[2020],effect_of:[2017],chain:'EPYC → 云端大客户 → 2020市值千亿'},
+{year:2020,type:'财务',label:'市值破千亿',desc:'转型成功验证',kinds:['fin'],cause_of:[2024],effect_of:[2019],chain:'复兴验证 → MI300 → 2024 AI入局'},
+{year:2022,type:'收购',label:'收购Xilinx',desc:'490亿美元，FPGA/自适应计算',kinds:['acquisition'],cause_of:[2023],effect_of:[2017],chain:'Xilinx → AI推理'},
+{year:2024,type:'产品',label:'MI300发布',desc:'AI加速器，正式与NVIDIA竞争',kinds:['star','product'],cause_of:[],effect_of:[2020,2022],chain:'MI300 → OpenAI/甲骨文 → AMD AI挑战者'},
+]},
+broadcom:{color:'#e42127',name:'Broadcom',ticker:'AVGO',profile:{founder:'1981年 · Samueli',business:'半导体·基础设施软件',revenue:'约500亿$/年',mcap:'$1.5万亿',moat:'Hock Tan疯狂并购，RF前端+网络+软件多元',highlight:'2016 370亿收购 → 2022 610亿VMware → 2023 AI爆发'},events:[
+{year:1981,type:'创立',label:'Broadcom创立',desc:'Henry Samueli创业，有线/无线通信',kinds:['star'],cause_of:[2005],effect_of:[]},
+{year:2005,type:'收购',label:'收购英飞凌',desc:'进入移动射频前端市场',kinds:['acquisition'],cause_of:[2006],effect_of:[1981],chain:'英飞凌 → RF前端垄断'},
+{year:2006,type:'收购',label:'收购Emulex',desc:'存储和网络安全芯片',kinds:['acquisition'],cause_of:[2013],effect_of:[2005],chain:'Emulex → LSI'},
+{year:2013,type:'财务',label:'收购LSI',desc:'40亿美元，补强存储',kinds:['fin'],cause_of:[2016],effect_of:[2006],chain:'LSI → Avago变大'},
+{year:2016,type:'收购',label:'收购Broadcom',desc:'370亿美元，Hock Tan主导完成半导体帝国',kinds:['star','acquisition'],cause_of:[2017,2022],effect_of:[2013],chain:'收购Broadcom → 2017 Brocade → 2022 VMware'},
+{year:2017,type:'收购',label:'收购Brocade',desc:'55亿美元，企业网络设备',kinds:['acquisition'],cause_of:[2022],effect_of:[2016],chain:'Brocade → VMware伏笔'},
+{year:2022,type:'收购',label:'收购VMware',desc:'610亿美元史上最大，软件+基础设施帝国',kinds:['acquisition'],cause_of:[2023],effect_of:[2016,2017],chain:'VMware → 2023 AI网络爆发'},
+{year:2023,type:'战略',label:'AI网络爆发',desc:'Tomahawk 5/800G网络交换，AI数据中心核心',kinds:['star','strategy'],cause_of:[],effect_of:[2022],chain:'VMware+AI网络 → XPU订单千亿'},
+]},
+meta:{color:'#0668e1',name:'Meta',ticker:'META',profile:{founder:'2004年 · 扎克伯格',business:'社交网络·元宇宙·AI',revenue:'约1640亿$/年',mcap:'$1.3万亿',moat:'Instagram/WhatsApp垄断+Llama开源',highlight:'2004 Facebook → 2012 IPO → 2014 WhatsApp → 2021 Meta → 2023 Llama'},events:[
+{year:2004,type:'创立',label:'Facebook上线',desc:'哈佛校园社交网络，快速扩展',kinds:['star'],cause_of:[2007],effect_of:[]},
+{year:2007,type:'产品',label:'开放平台',desc:'开放API/插件，开发者生态',kinds:['product'],cause_of:[2012],effect_of:[2004],chain:'开放平台 → 2012 IPO'},
+{year:2012,type:'财务',label:'IPO上市',desc:'160亿美元，科技公司最大IPO',kinds:['fin'],cause_of:[2014],effect_of:[2007],chain:'IPO → 收购Instagram/WhatsApp'},
+{year:2012,type:'收购',label:'收购Instagram',desc:'10亿美元，图片社交垄断',kinds:['star','acquisition'],cause_of:[2014],effect_of:[2004,2007],chain:'Instagram → 00后垄断'},
+{year:2014,type:'收购',label:'收购WhatsApp',desc:'190亿美元，即时通讯全球20亿用户',kinds:['star','acquisition'],cause_of:[2021],effect_of:[2012],chain:'WhatsApp → 全球垄断 → 2021改名Meta'},
+{year:2016,type:'产品',label:'Oculus',desc:'VR硬件，Metaverse布局',kinds:['product'],cause_of:[2021],effect_of:[2014],chain:'Oculus → 2021改名Meta'},
+{year:2021,type:'转折',label:'改名Meta',desc:'Facebook改名Meta，All in元宇宙',kinds:['star','strategy'],cause_of:[2022],effect_of:[2014,2016],chain:'改名Meta → 烧钱 → 股价跌60%'},
+{year:2022,type:'财务',label:'市值蒸发',desc:'元宇宙烧钱，股价跌60%，裁员万人',kinds:['fin'],cause_of:[2023],effect_of:[2021],chain:'元宇宙失败 → 2023转向AI'},
+{year:2023,type:'产品',label:'Llama开源',desc:'开源大模型，改变AI竞争格局',kinds:['star','product'],cause_of:[2025],effect_of:[2022],chain:'Llama开源 → 开发者涌入 → 2024 AI转型'},
+{year:2025,type:'产品',label:'Llama 4',desc:'多模态，开源生态，企业级AI',kinds:['product'],cause_of:[],effect_of:[2023],chain:'Llama 4 → 广告+AI双驱动'},
+]},
+tesla:{color:'#e82127',name:'Tesla',ticker:'TSLA',profile:{founder:'2003年 · 艾伯哈德/塔彭宁',business:'EV·能源存储·自动驾驶·机器人',revenue:'约967亿$/年',mcap:'$12万亿',moat:'Gigafactory垂直整合，百万车队数据，能源协同',highlight:'2008 Roadster → 2014 Gigafactory → 2017 Model 3 → 2024 Robotaxi'},events:[
+{year:2003,type:'创立',label:'公司创立',desc:'艾伯哈德/塔彭宁，EV愿景',kinds:['star'],cause_of:[2008],effect_of:[]},
+{year:2004,type:'融资',label:'马斯克投资',desc:'主导A轮，关键资金与信誉',kinds:[],cause_of:[2008],effect_of:[2003],chain:'马斯克注资 → 2008 Roadster'},
+{year:2008,type:'产品',label:'Roadster量产',desc:'首款续航200+英里EV跑车',kinds:['star','product'],cause_of:[2012],effect_of:[2003,2004],chain:'Roadster → Model S'},
+{year:2008,type:'转折',label:'出任CEO',desc:'公司重组，避免破产',kinds:['star'],cause_of:[2012],effect_of:[2004],chain:'马斯克任CEO → Model S'},
+{year:2010,type:'财务',label:'NASDAQ上市',desc:'福特以来首家IPO美国车企',kinds:['fin'],cause_of:[2012],effect_of:[2008],chain:'上市获资金'},
+{year:2012,type:'产品',label:'Model S',desc:'长续航/优质设计，重新定义EV',kinds:['product'],cause_of:[2014],effect_of:[2008,2010],chain:'Model S → Gigafactory'},
+{year:2014,type:'战略',label:'Gigafactory',desc:'垂直整合，电池规模化，降本核心',kinds:['star','strategy'],cause_of:[2017],effect_of:[2012],chain:'Gigafactory → Model 3降价量产'},
+{year:2017,type:'产品',label:'Model 3投产',desc:'大众市场EV，预订破纪录',kinds:['star','product'],cause_of:[2019],effect_of:[2014],chain:'Model 3 → 上海工厂'},
+{year:2019,type:'战略',label:'上海工厂',desc:'首家海外工厂，建设速度纪录',kinds:['star'],cause_of:[2020],effect_of:[2017],chain:'上海工厂 → 2020全球交付爆发'},
+{year:2020,type:'财务',label:'首次年度盈利',desc:'商业模式验证',kinds:['fin'],cause_of:[2021],effect_of:[2019],chain:'盈利 → 市值飙升'},
+{year:2021,type:'财务',label:'市值破万亿',desc:'超越所有传统车企总和',kinds:['fin'],cause_of:[2023],effect_of:[2020],chain:'万亿市值 → FSD/机器人'},
+{year:2023,type:'产品',label:'Cybertruck交付',desc:'纯电动皮卡，量产交付',kinds:['product'],cause_of:[2024],effect_of:[2021],chain:'Cybertruck → Robotaxi蓄势'},
+{year:2024,type:'战略',label:'Robotaxi/Optimus',desc:'自动驾驶出租和人形机器人战略',kinds:['strategy'],cause_of:[],effect_of:[2023],chain:'FSD → Robotaxi → Optimus'},
+]},
+msft:{color:'#00a4ef',name:'Microsoft',ticker:'MSFT',profile:{founder:'1975年 · 比尔·盖茨/保罗·艾伦',business:'操作系统·云服务·企业软件·游戏',revenue:'约2119亿$/年',mcap:'$3.4万亿',moat:'Azure+Microsoft 365+GitHub生态，纳德拉转型成功',highlight:'1980 IBM模式 → 2010 Azure → 2014纳德拉 → 2023 动视暴雪'},events:[
+{year:1975,type:'创立',label:'公司创立',desc:'盖茨/艾伦，首款BASIC',kinds:['star'],cause_of:[1980],effect_of:[]},
+{year:1980,type:'战略',label:'IBM合作',desc:'MS-DOS许可模式，奠定平台逻辑',kinds:['star'],cause_of:[1985],effect_of:[1975],chain:'MS-DOS → OS垄断'},
+{year:1985,type:'产品',label:'Windows 1.0',desc:'图形界面，PC时代标准',kinds:['product'],cause_of:[1995],effect_of:[1980],chain:'Windows → 95/98/XP'},
+{year:1995,type:'产品',label:'Windows 95',desc:'开始菜单/任务栏，主流市场爆发',kinds:['product'],cause_of:[2001],effect_of:[1985],chain:'Win95 → Xbox'},
+{year:2001,type:'产品',label:'Xbox',desc:'进军游戏产业',kinds:['product'],cause_of:[2007],effect_of:[1995],chain:'Xbox → 动视暴雪前身'},
+{year:2010,type:'产品',label:'Azure云平台',desc:'云计算战略，与AWS竞争',kinds:['star','product'],cause_of:[2014],effect_of:[2001],chain:'Azure → 2014纳德拉 → 2020超Windows'},
+{year:2014,type:'转折',label:'纳德拉接任CEO',desc:'云优先/移动优先/AI优先战略转型',kinds:['star'],cause_of:[2018],effect_of:[2010],chain:'纳德拉 → Azure超Windows'},
+{year:2016,type:'收购',label:'收购LinkedIn',desc:'262亿美元，专业社交网络',kinds:['acquisition'],cause_of:[2018],effect_of:[2014],chain:'LinkedIn → M365整合'},
+{year:2018,type:'收购',label:'收购GitHub',desc:'75亿美元，全球开发者社区',kinds:['acquisition'],cause_of:[2020],effect_of:[2016],chain:'GitHub → Copilot前身'},
+{year:2020,type:'财务',label:'市值破1.5万亿',desc:'云业务高速增长',kinds:['fin'],cause_of:[2023],effect_of:[2018],chain:'Azure高速 → Copilot'},
+{year:2023,type:'收购',label:'收购动视暴雪',desc:'690亿美元，史上最大游戏收购',kinds:['star','acquisition'],cause_of:[],effect_of:[2001,2018],chain:'动视暴雪 → 游戏霸主'},
+]},
+samsung:{color:'#1428a0',name:'三星电子',ticker:'005930.KS',profile:{founder:'1969年 · 三星电子',business:'存储器·显示面板·手机·晶圆代工',revenue:'约2600亿$/年',mcap:'$3200亿',moat:'DRAM/NAND全球第一，Galaxy高端旗舰，OLED垄断',highlight:'1983 半导体决定 → 1992 DRAM第一 → 2016 Note7 → 2022 3nm GAA'},events:[
+{year:1969,type:'创立',label:'三星电子成立',desc:'从纺织/电视到半导体',kinds:['star'],cause_of:[1983],effect_of:[]},
+{year:1983,type:'战略',label:'半导体起步',desc:'李健熙决定存储器芯片战略',kinds:['star'],cause_of:[1992],effect_of:[1969],chain:'李健熙赌半导体 → DRAM霸主'},
+{year:1992,type:'产品',label:'DRAM全球第一',desc:'全球首个256M DRAM',kinds:['star','product'],cause_of:[2000],effect_of:[1983],chain:'DRAM霸主 → NAND → 手机/面板垂直整合'},
+{year:2000,type:'产品',label:'NAND闪存',desc:'NAND Flash全球第一',kinds:['product'],cause_of:[2005],effect_of:[1992],chain:'NAND第一 → 双轮驱动'},
+{year:2005,type:'产品',label:'晶圆代工',desc:'首个外部客户',kinds:['product'],cause_of:[2017],effect_of:[2000],chain:'代工 → 2017独立'},
+{year:2016,type:'挫折',label:'Galaxy Note7',desc:'旗舰爆炸事故，全球召回，品牌危机',kinds:['star'],cause_of:[2017],effect_of:[2005],chain:'Note7危机 → 质量重建'},
+{year:2017,type:'战略',label:'晶圆代工独立',desc:'独立代工业务，大规模投资',kinds:['strategy'],cause_of:[2022],effect_of:[2005,2016],chain:'代工独立 → 3nm GAA追赶台积电'},
+{year:2022,type:'产品',label:'3nm GAA',desc:'全球首个GAA架构代工',kinds:['product'],cause_of:[2024],effect_of:[2017],chain:'3nm → HBM配套AI'},
+{year:2024,type:'战略',label:'AI存储器',desc:'HBM3/HBM4配套英伟达AI需求',kinds:['strategy'],cause_of:[],effect_of:[2022],chain:'HBM供英伟达 → AI存储器垄断'},
+]},
+amazon:{color:'#ff9900',name:'Amazon',ticker:'AMZN',profile:{founder:'1994年 · 贝索斯',business:'电商·云计算·AI·物流',revenue:'约6200亿$/年',mcap:'$2.8万亿',moat:'AWS先发+规模效应，电商+Prime+AWS飞轮',highlight:'1994 在线书店 → 2004 AWS → 2007 Kindle → 2022 贝索斯卸任'},events:[
+{year:1994,type:'创立',label:'公司成立',desc:'贝索斯车库创业，在线书店',kinds:['star'],cause_of:[1997],effect_of:[]},
+{year:1997,type:'财务',label:'NASDAQ上市',desc:'IPO，5400万美元',kinds:['fin'],cause_of:[2003],effect_of:[1994],chain:'上市 → 撑过泡沫'},
+{year:2003,type:'财务',label:'首次盈利',desc:'实现年度盈利，商业模式验证',kinds:['fin'],cause_of:[2004],effect_of:[1997],chain:'盈利 → 支撑AWS研发'},
+{year:2004,type:'产品',label:'AWS',desc:'云计算服务，S3/EC2',kinds:['star','product'],cause_of:[2005],effect_of:[2003],chain:'AWS → 云时代霸主'},
+{year:2005,type:'产品',label:'Prime会员',desc:'两日达无限次，创新会员模式',kinds:['product'],cause_of:[2007],effect_of:[2004],chain:'Prime → 电商护城河'},
+{year:2007,type:'产品',label:'Kindle',desc:'电子书阅读器，改变出版业',kinds:['star','product'],cause_of:[2010],effect_of:[2005],chain:'Kindle → 数字内容'},
+{year:2013,type:'收购',label:'收购Kiva',desc:'7.75亿美元，仓库机器人',kinds:['acquisition'],cause_of:[2017],effect_of:[2007],chain:'Kiva → 仓储自动化'},
+{year:2017,type:'收购',label:'收购全食',desc:'137亿美元，进军实体零售',kinds:['acquisition'],cause_of:[2019],effect_of:[2013],chain:'全食 → 线上+线下新零售'},
+{year:2019,type:'产品',label:'Alexa设备',desc:'Echo音箱系列，家庭AI助手标配',kinds:['product'],cause_of:[2022],effect_of:[2017],chain:'Alexa → 智能家居'},
+{year:2022,type:'战略',label:'贝索斯卸任',desc:'贾西接任CEO，云计算负责人上位',kinds:['strategy'],cause_of:[2023],effect_of:[2019],chain:'贾西接任 → AWS+广告双轮'},
+{year:2023,type:'产品',label:'Amazon Q',desc:'生成式AI助手，企业级',kinds:['product'],cause_of:[],effect_of:[2022],chain:'Amazon Q → AWS AI化'},
+]}
+};
+const TL_TAG_MAP={star:'⭐',product:'📦',acquisition:'🤝',lead:'👤',legal:'⚖️',fin:'💰',strategy:'🎯'};
+let tlActiveCo='apple';
+function switchTimeline(co){tlActiveCo=co;document.querySelectorAll('.tl-co-tab').forEach(t=>t.classList.toggle('active',t.dataset.co===co));const c=TL_COMPANIES[co];const p=document.getElementById('tlProfile');if(p&&c){const d=c.profile;p.style.display='block';p.innerHTML='<div style="font-weight:700;font-size:15px;margin-bottom:8px;color:'+c.color+'">'+d.founder+'</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;font-size:12px"><div><span style="color:#64748b">核心业务</span><br>'+d.business+'</div><div><span style="color:#64748b">营收/市值</span><br>'+d.revenue+' · '+d.mcap+'</div><div style="grid-column:1/-1"><span style="color:#64748b">护城河</span><br>'+d.moat+'</div><div style="grid-column:1/-1;margin-top:6px;padding:8px;background:#0a0e1a;border-radius:6px;border-left:3px solid '+c.color+'"><span style="color:#64748b">精华因果链</span><br>'+d.highlight+'</div></div>';}renderTLChart(co);}
+function renderTLChart(co){const c=TL_COMPANIES[co];if(!c)return;const eras=[{label:'创立期',min:1900,max:1999},{label:'增长期',min:2000,max:2014},{label:'爆发期',min:2015,max:2026}];let html='<div style="max-width:800px;margin:0 auto">';eras.forEach(era=>{const evs=c.events.filter(e=>e.year>=era.min&&e.year<=era.max);if(!evs.length)return;html+='<div class="tl-era"><div class="tl-era-label"><span>'+era.label+'</span></div>';evs.forEach((e,i)=>{const isLeft=i%2===0;const tags=e.kinds.map(k=>'<span class="tl-tag tl-tag-'+k+'">'+(TL_TAG_MAP[k]||'')+'</span>').join('');const chainHtml=e.chain?'<div class="tl-chain" onclick="this.classList.toggle(\\'tl-chain-show\\')"><span class="tl-chain-arrow">因果 ⟹</span> '+e.chain+'</div>':'';const causeHtml=(e.cause_of.length||e.effect_of.length)?'<div class="tl-cause-bar">'+(e.effect_of.length?'⬆ 因于'+e.effect_of.join('/'):'')+(e.cause_of.length?'&nbsp;⬇ 引出'+e.cause_of.join('/'):'')+'</div>':'';if(isLeft){html+='<div class="tl-event"><div class="tl-event-left"><span class="tl-year" style="color:'+c.color+'">'+e.year+'</span>'+tags+'<div class="tl-label">'+e.label+'</div><div class="tl-desc">'+e.desc+'</div>'+causeHtml+chainHtml+'</div><div class="tl-event-center"><div class="tl-dot" style="background:'+c.color+'"></div></div><div class="tl-event-right"></div></div>';}else{html+='<div class="tl-event"><div class="tl-event-left"></div><div class="tl-event-center"><div class="tl-dot" style="background:'+c.color+'"></div></div><div class="tl-event-right"><span class="tl-year" style="color:'+c.color+'">'+e.year+'</span>'+tags+'<div class="tl-label">'+e.label+'</div><div class="tl-desc">'+e.desc+'</div>'+causeHtml+chainHtml+'</div></div>';}});html+='</div>';});html+='</div>';document.getElementById('tlChart').innerHTML=html;}
+function initTimelineTab(){const c=document.getElementById('tlCompanyTabs');if(!c)return;let h='';Object.entries(TL_COMPANIES).forEach(([k,co])=>{h+='<button class="tl-co-tab'+(k==='apple'?' active':'')+'" data-co="'+k+'" onclick="switchTimeline(\\''+k+'\')" style="border-color:'+co.color+'20;color:'+co.color+'">'+co.name+'</button>';});c.innerHTML=h;switchTimeline('apple');}
+const _origSwitchTab=window.switchTab;window.switchTab=function(company){const isT=company==='Timeline';const ce=document.querySelector('.chart-container');if(ce)ce.style.display=isT?'none':'block';document.getElementById('timelineView').style.display=isT?'block':'none';if(isT){initTimelineTab();}else if(_origSwitchTab){_origSwitchTab(company);}};window.addEventListener('resize',()=>{if(typeof resizeChart==='function')resizeChart();});
+
 window.addEventListener('resize', () => {
     if (currentChart) currentChart.resize();
 });
